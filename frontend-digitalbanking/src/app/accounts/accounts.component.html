@@ -35,6 +35,11 @@
                 </tr>
                 </tbody>
               </table>
+              <ul class="nav nav-pills">
+                <li *ngFor="let p of [].constructor(totalPages); let page=index">
+                  <a [ngClass]="page==currentPage?'btn-info':'btn-outline-info'" (click)="gotoPage(page)" class="btn btn-outline-primary ms-1 mt-1">{{page}}</a>
+                </li>
+              </ul>
 
             </div>
           </ng-container>

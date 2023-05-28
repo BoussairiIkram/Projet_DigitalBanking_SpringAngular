@@ -16,9 +16,11 @@ import java.util.List;
 public class AccountOperationController {
     private AccountOperationService accountOperationService;
 
-    @GetMapping("/all/{id}")
-    public List<AccountOperationRespenseDTO> getAccountHistory(@PathVariable String id) throws BankAccountNotFoundException {
-        return accountOperationService.getAccountHistory(id);
+    @GetMapping("/history/{id}/pageOperation")
+    public List<AccountOperationRespenseDTO> getAccountHistory(@PathVariable String id,
+                                                               @RequestParam(name="page",defaultValue = "0") int page,
+                                                               @RequestParam(name="size",defaultValue = "5")int size) throws BankAccountNotFoundException {
+        return accountOperationService.getAccountHistory(id, page, size);
     }
 
     @GetMapping("/{id}")

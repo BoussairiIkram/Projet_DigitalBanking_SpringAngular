@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {AccountsService} from "../services/accountService/accounts.service";
 import {catchError, Observable, throwError} from "rxjs";
 import {AccountOperation} from "../model/account.model";
-import {Customer} from "../model/customer.model";
 
 @Component({
   selector: 'app-accounts',
@@ -15,6 +14,9 @@ export class AccountsComponent implements OnInit {
   operationObservable! : Observable<Array<AccountOperation>>;
   accountId! : string;
   operationFormGroup! : FormGroup;
+  currentPage:number=0;
+  pageSize:number=5;
+  totalPages!:number;
 
   constructor(private fb:FormBuilder,
               private accountService: AccountsService) { }
@@ -24,6 +26,7 @@ export class AccountsComponent implements OnInit {
       accountId:this.fb.control('')
     })
 
+
     this.operationFormGroup=this.fb.group({
       operationType : this.fb.control(null),
       amount : this.fb.control(0),
@@ -32,14 +35,24 @@ export class AccountsComponent implements OnInit {
     })
 
 
+
+
   }
 
   handleSearchAccount() {
     this.accountId=this.accountFormGroup.value.accountId;
-    this.operationObservable = this.accountService.getOperationsAccount(this.accountId).pipe(
+
+    this.operationObservable = this.accountService.getOperationsAccount(this.accountId, this.currentPage, this.pageSize).pipe(
       catchError(err=>{
         return throwError(err);
       }))
+
+    this.operationObservable.subscribe((operationObservable: AccountOperation[])=>{
+      if(operationObservable.length>0){
+        this.totalPages = operationObservable[0].totalPages;
+      }
+    })
+
   }
 
   handleAccountOperation() {
@@ -88,5 +101,10 @@ export class AccountsComponent implements OnInit {
     }
 
 
+  }
+
+  gotoPage(page:number) {
+    this.currentPage=page;
+    this.handleSearchAccount();
   }
 }

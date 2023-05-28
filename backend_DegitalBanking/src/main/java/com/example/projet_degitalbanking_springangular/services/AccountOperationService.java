@@ -5,6 +5,7 @@ import com.example.projet_degitalbanking_springangular.Exception.BalanceNotSuffi
 import com.example.projet_degitalbanking_springangular.Exception.BankAccountNotFoundException;
 import com.example.projet_degitalbanking_springangular.dtos.requests.AccountOperationRequestDTO;
 import com.example.projet_degitalbanking_springangular.dtos.responses.AccountOperationRespenseDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface AccountOperationService {
     void Credit(AccountOperationRequestDTO accountOperationRequestDTO) throws BalanceNotSufficientException, BankAccountNotFoundException;
     void Transfet(AccountOperationRequestDTO accountOperationRequestDTO) throws BalanceNotSufficientException, BankAccountNotFoundException;
 
-    List<AccountOperationRespenseDTO> getAccountHistory(String id) throws BankAccountNotFoundException;
+    List<AccountOperationRespenseDTO> getAccountHistory(String id, int page, int size) throws BankAccountNotFoundException;
     AccountOperationRespenseDTO getAccountOperation(Long id) throws AccountOperationNotFoundException;
 
     Boolean deleteAccountOperation(Long id) throws AccountOperationNotFoundException;

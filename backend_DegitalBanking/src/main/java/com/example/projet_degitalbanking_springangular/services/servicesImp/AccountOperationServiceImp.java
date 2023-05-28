@@ -14,6 +14,8 @@ import com.example.projet_degitalbanking_springangular.repositories.AccountOpera
 import com.example.projet_degitalbanking_springangular.repositories.BankAccountRepository;
 import com.example.projet_degitalbanking_springangular.services.AccountOperationService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,15 +80,16 @@ public class AccountOperationServiceImp implements AccountOperationService {
     }
 
     @Override
-    public List<AccountOperationRespenseDTO> getAccountHistory(String id) throws BankAccountNotFoundException {
+    public List<AccountOperationRespenseDTO> getAccountHistory(String id, int page, int size) throws BankAccountNotFoundException {
         if(id!=null){
             BankAccount bankAccount = bankAccountRepository.findById(id).orElseThrow(()->new BankAccountNotFoundException(id));
             if(bankAccount!=null){
-                List<AccountOperation> operations = accountOperationRepository.findByCleEtrangereOrderByDateCreationDesc(id);
+                Page<AccountOperation> operations = accountOperationRepository.findByCleEtrangereOrderByDateCreationDesc(id, PageRequest.of(page, size));
                 if(operations!=null){
-                    List<AccountOperationRespenseDTO> respenseDTOS = operations.stream()
-                            .map(acc -> accountOperationMapper.fromAccountOperation(acc))
+                    List<AccountOperationRespenseDTO> respenseDTOS = operations.getContent().stream().map(
+                            op-> accountOperationMapper.fromAccountOperation(op))
                             .collect(Collectors.toList());
+                    respenseDTOS.get(0).setTotalPages(operations.getTotalPages());
 
                     return respenseDTOS;
                 }

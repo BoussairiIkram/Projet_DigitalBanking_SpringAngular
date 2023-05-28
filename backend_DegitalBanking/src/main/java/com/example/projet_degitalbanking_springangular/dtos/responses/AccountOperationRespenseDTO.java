@@ -13,4 +13,5 @@ public class AccountOperationRespenseDTO {
     private OperationType opType;
     private String description;
     private String idBankAccount;
+    private int totalPages;
 }

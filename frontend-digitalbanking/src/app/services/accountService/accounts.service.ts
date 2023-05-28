@@ -11,8 +11,8 @@ export class AccountsService {
 
   constructor(private http:HttpClient) { }
 
-  public getOperationsAccount(accountId:String):Observable<Array<AccountOperation>>{
-    return this.http.get<Array<AccountOperation>>(environment.backendHost+"/api/accounts/operation/all/"+accountId);
+  public getOperationsAccount(accountId:String, page : number, size : number):Observable<Array<AccountOperation>>{
+    return this.http.get<Array<AccountOperation>>(environment.backendHost+"/api/accounts/operation/history/"+accountId+"/pageOperation?page="+page+"&size="+size);
   }
 
   public debit(operationRequest:OperationRequest):Observable<OperationRequest>{

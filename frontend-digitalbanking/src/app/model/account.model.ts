@@ -5,6 +5,7 @@ export interface AccountOperation {
   opType:        string;
   description:   string;
   idBankAccount: string;
+  totalPages: number;
 }
 
 export interface OperationRequest {
