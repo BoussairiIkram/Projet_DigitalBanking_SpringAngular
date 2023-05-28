@@ -1,0 +1,89 @@
+<div class="container m-2">
+  <div class="row">
+
+    <div class="col col-md-5 offset-1">
+      <div  class="card">
+        <div class="card-header">Accounts</div>
+        <div class="card-body">
+          <form [formGroup]="accountFormGroup" (ngSubmit)="handleSearchAccount()">
+            <div class="input-group">
+              <label class="input-group-text">Account Id</label>
+              <input type="text" formControlName="accountId" class="form-control">
+              <button class="btn btn-primary">
+                <i class="bi bi-search"></i>Search
+              </button>
+            </div>
+          </form>
+          <ng-container *ngIf="operationObservable | async as accountOperation">
+            <div>
+              <label>Account Id :</label>
+              <label> <strong>{{accountId}} </strong></label>
+
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Id</th><th>Date</th><th>Type</th><th>Amount</th><th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let op of  operationObservable | async">
+                  <td>{{op.id}}</td>
+                  <td>{{op.dateOperation | date : 'dd-mm-yyyy:HH-mm-ss'}}</td>
+                  <td>{{op.opType}}</td>
+                  <td>{{op.amount}}</td>
+                  <td>{{op.description}}</td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </ng-container>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col col-md-5 offset-1">
+        <div class="card" *ngIf="operationObservable">
+          <div class="card-header">Operations</div>
+          <div class="card-body">
+
+            <form method="post" [formGroup]="operationFormGroup" (ngSubmit)="handleAccountOperation()" >
+              <div class="form-check form-check-inline">
+                <input value="debit" class="form-check-input" type="radio" formControlName="operationType">
+                <label class="form-check-label" >Debit:</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input value="credit" class="form-check-input" type="radio" formControlName="operationType">
+                <label class="form-check-label" >Credit:</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input value="transfert" class="form-check-input" type="radio" formControlName="operationType">
+                <label class="form-check-label" >Transfert:</label>
+              </div>
+              <div class="mt-3 mb-3" *ngIf="operationFormGroup.value.operationType=='transfert'">
+                <label>Account Destination Id:</label>
+                <input type="text" formControlName="idBankAccountDestination" class="form-control">
+              </div>
+
+              <div class="mb-3">
+                <label>Amount:</label>
+                <input type="text" formControlName="amount" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label>Description :</label>
+                <input type="text" formControlName="description" class="form-control">
+              </div>
+
+              <div class="d-grid mb-3">
+                <button class="btn btn-success ">Save Operation</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+

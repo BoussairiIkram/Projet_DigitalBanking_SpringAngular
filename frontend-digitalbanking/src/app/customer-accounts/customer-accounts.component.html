@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">Customer Accounts</div>
+    <div class="card-body">
+        <div>
+          <p>id: {{customer.id}}</p>
+          <p>Nom: {{customer.nom}}</p>
+        </div>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Id</th><th>Status</th><th>Type</th><th>Balance</th><th>Currency</th><th>interest rate</th><th>Over draft</th><th>Date Creation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let acc of accounts | async">
+          <td>{{acc.id}}</td>
+          <td>{{acc.status}}</td>
+          <td>{{acc.type}}</td>
+          <td>{{acc.balance}}</td>
+          <td>{{acc.currency}}</td>
+          <td>{{acc.interestRate}}</td>
+          <td>{{acc.overDraft}}</td>
+          <td>{{acc.createdAt | date : 'dd-mm-yyyy:HH-mm-ss'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
